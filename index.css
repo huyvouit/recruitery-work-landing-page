@@ -272,7 +272,7 @@ p.header__title {
 
 .step {
     opacity: 0;
-    animation: showstep 1s ease-in-out 1s forwards;
+    animation: showstep 0.8s ease-in-out forwards;
 
 }
 
@@ -369,7 +369,7 @@ p.button-text {
 
 .benifit {
     opacity: 0;
-    animation: showbinifit 1.8s ease-in-out 1s forwards;
+    animation: showbinifit 1.2s ease-in-out forwards;
 
 }
 
@@ -508,10 +508,11 @@ p.button-text {
 
 
 .headHunter__slide {
-    width: 100vw;
-    /* height: 100%; */
-    overflow: hidden;
-    /* padding-bottom: 128px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .slider-wrapper {
@@ -895,6 +896,7 @@ p.button-text {
 
     .headHunter__slide {
         padding-bottom: 64px;
+        display: block;
     }
 
     .div-dot {
