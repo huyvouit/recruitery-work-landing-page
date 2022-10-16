@@ -121,11 +121,17 @@ function touchEnd() {
   cancelAnimationFrame(animationID);
   isDragging = false;
   const movedBy = currentTranslate - prevTranslate;
-
+  currentIndex = indexClick;
   // if moved enough negative then snap to next slide if there is one
-  if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex += 1;
+  if (movedBy < -100 && currentIndex < slides.length - 1) {
+    currentIndex += 1;
+    indexClick = currentIndex;
+  }
   // if moved enough positive then snap to previous slide if there is one
-  if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+  if (movedBy > 100 && currentIndex > 0) {
+    currentIndex -= 1;
+    indexClick = currentIndex;
+  }
 
   setPositionByIndex();
 
@@ -136,7 +142,6 @@ function touchEnd() {
   }
 
   dots[currentIndex].className += " dot-active";
-  indexClick = currentIndex;
 }
 
 function animation() {
