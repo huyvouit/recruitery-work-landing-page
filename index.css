@@ -386,7 +386,6 @@ p.button-text {
 }
 
 .intro__benifit {
-    /* width: 500px; */
     height: 100%;
     flex: 3.4722222;
     background-color: var(--green-dark-color);
@@ -454,15 +453,12 @@ p.button-text {
 }
 
 /* benifit */
-
-
 /* ==== intro ====*/
 
 /* ==== headHunter ====*/
 .headHunter {
     background-color: var(--green-light-color);
     height: 700px;
-    width: 100vw;
     display: flex;
     flex-direction: column;
 }
@@ -491,7 +487,6 @@ p.button-text {
     text-align: center;
     text-transform: capitalize;
     color: var(--black-color);
-
 }
 
 .headHunter__subTitle {
@@ -508,11 +503,7 @@ p.button-text {
 
 
 .headHunter__slide {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+    overflow: hidden;
 }
 
 .slider-wrapper {
@@ -618,26 +609,17 @@ p.button-text {
 
 /* slider laptop */
 .slide__child {
-    display: none;
+    user-select: none;
+    max-height: 100%;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 96px;
     position: relative;
     left: 38px;
 }
 
-.fade {
-    animation-name: fade;
-    animation-duration: 1.5s;
-}
-
-@keyframes fade {
-    from {
-        opacity: .4
-    }
-
-    to {
-        opacity: 1
-    }
-}
 
 .slide__item {
     width: 480px;
@@ -646,7 +628,6 @@ p.button-text {
     background-color: var(--green-dark-color);
     padding-top: 57px;
     padding-bottom: 59px;
-
 }
 
 .slide__content--lap {
@@ -654,7 +635,6 @@ p.button-text {
     left: -56px;
     display: flex;
     flex-direction: column;
-
 }
 
 .slide__dot--lap {
@@ -691,13 +671,11 @@ p.button-text {
 }
 
 .slide__child>.slide__item:nth-child(2)>.slide__content--lap>.slide__content--auth--lap {
-    /* flex: 1; */
-
-
     margin-top: auto;
 }
 
 .slide__item--ava {
+    user-select: none;
     position: relative;
     left: -76px;
     width: 172px;
@@ -705,17 +683,22 @@ p.button-text {
 }
 
 /* Slideshow container */
-.slideshow-container {
-    max-width: 1440px;
-    position: relative;
-    /* margin: 0 auto; */
+.slider-container {
+    z-index: 10;
+    display: inline-flex;
+    overflow: hidden;
+    scrollbar-width: none;
+    transform: translateX(0);
+    will-change: transform;
+    transition: transform 0.3s ease-out;
+    cursor: grab;
     margin-top: 28px;
-    display: flex;
-    justify-content: center;
 }
 
+
+
+
 .div-dot {
-    max-width: var(--max-width);
     display: flex;
     justify-content: center;
     margin-top: 16px;
@@ -741,11 +724,8 @@ p.button-text {
 
 
 /* ==== questions ====*/
-
 .questions {
     background-color: var(--white-color);
-
-
 }
 
 .questions__wrapper {
@@ -782,6 +762,10 @@ p.button-text {
     animation-delay: 0.3s !important;
 }
 
+.delay-4 {
+    animation-delay: 0.7s !important;
+}
+
 .delay-2 {
     animation-delay: 0.6s !important;
 }
@@ -815,7 +799,6 @@ p.button-text {
     line-height: 47px;
     text-transform: capitalize;
     cursor: pointer;
-
 }
 
 .open-active {
@@ -840,7 +823,6 @@ p.button-text {
 }
 
 /* ==== questions ====*/
-
 
 
 /* responsive */
@@ -881,12 +863,11 @@ p.button-text {
     }
 
     /* slide */
-
     .headHunter {
         height: 100%;
     }
 
-    .slideshow-container {
+    .slider-container {
         display: none;
     }
 
@@ -963,7 +944,6 @@ p.button-text {
 
     .questions__item {
         width: 100%;
-        /* padding: 0 15px; */
         padding: 24px 0;
     }
 
@@ -1063,7 +1043,6 @@ p.button-text {
 }
 
 
-
 /* modal */
 .modal {
     display: none;
@@ -1078,7 +1057,6 @@ p.button-text {
     background-color: rgba(0, 0, 0, 0.7);
     align-items: center;
     justify-content: center;
-
 }
 
 .modal-content {

@@ -11,6 +11,10 @@ document.addEventListener("scroll", (event) => {
 // modal
 const modal = document.getElementById("myModal");
 const button = document.getElementById("btn-open-modal");
+const iframe = document.getElementsByTagName("iframe")[0];
+
+const url = iframe.getAttribute("src");
+
 button.onclick = function () {
   modal.style.display = "flex";
   document.body.style.overflow = "hidden";
@@ -21,6 +25,8 @@ const span = document.getElementsByClassName("close")[0];
 modal.onclick = function () {
   modal.style.display = "none";
   document.body.style.overflow = "unset";
+  iframe.setAttribute("src", "");
+  iframe.setAttribute("src", url);
 };
 
 // tab
@@ -61,5 +67,3 @@ function changeQuestion() {
   });
 }
 changeQuestion();
-
-// slider

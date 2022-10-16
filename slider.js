@@ -1,4 +1,5 @@
 var sliders = document.querySelectorAll(".slider-wrapper");
+span;
 
 window.addEventListener("resize", () => {
   for (let i = 0; i < sliders.length; i++) {
@@ -8,41 +9,8 @@ window.addEventListener("resize", () => {
 
 for (let i = 0; i < sliders.length; i++) {
   let slider = sliders[i].querySelector(".slider");
-  let wrapper = slider.querySelector(".wrapper");
 
   setWrapperWidth(sliders[i]);
-
-  // prev/next event listeners
-  let navR = sliders[i].querySelector("nav .right");
-  let navL = sliders[i].querySelector("nav .left");
-
-  //   nav
-  //   slider.addEventListener("scroll", () => {
-  //     if (slider.scrollLeft === 0) navL.classList.add("disabled");
-  //     else navL.classList.remove("disabled");
-
-  //     if (slider.scrollLeft >= wrapper.clientWidth - slider.clientWidth)
-  //       navR.classList.add("disabled");
-  //     else navR.classList.remove("disabled");
-  //   });
-
-  //   if (navR)
-  //     navR.addEventListener("click", (e) => {
-  //       navL.classList.remove("disabled");
-  //       transition(slider, 0, slider.clientWidth, "right", () => {
-  //         if (slider.scrollLeft >= wrapper.clientWidth - slider.clientWidth) {
-  //           navR.classList.add("disabled");
-  //         }
-  //       });
-  //     });
-
-  //   if (navL)
-  //     navL.addEventListener("click", (e) => {
-  //       navR.classList.remove("disabled");
-  //       transition(slider, 0, slider.clientWidth, "left", () => {
-  //         if (slider.scrollLeft == 0) navL.classList.add("disabled");
-  //       });
-  //     });
 }
 
 function transition(el, from, to, dir, cb) {
@@ -70,34 +38,118 @@ function setWrapperWidth(sliderWrapper) {
     "px";
 }
 
-// laptop
-let slideIndex = 1;
-showSlides(slideIndex);
+// laptop swipe;
+const dots = document.querySelectorAll(".dot");
+const listSlider = document.querySelector(".slider-container"),
+  slides = Array.from(document.querySelectorAll(".slide__child"));
 
-function plusSlides(n) {
-  showSlides((slideIndex += n));
+let isDragging = false,
+  startPos = 0,
+  currentTranslate = 0,
+  prevTranslate = 0,
+  animationID,
+  indexClick = 0,
+  currentIndex = 0;
+
+slides.forEach((slide, index) => {
+  const slideImage = slide.querySelectorAll(".slide__item")[0];
+  const slideImage1 = slide.querySelectorAll(".slide__item")[1];
+  // disable default image drag
+  slideImage.addEventListener("dragstart", (e) => e.preventDefault());
+  slideImage1.addEventListener("dragstart", (e) => e.preventDefault());
+
+  // touch events
+  slide.addEventListener("touchstart", touchStart(index));
+  slide.addEventListener("touchend", touchEnd);
+  slide.addEventListener("touchmove", touchMove);
+  // mouse events
+  slide.addEventListener("mousedown", touchStart(index));
+  slide.addEventListener("mouseup", touchEnd);
+  slide.addEventListener("mousemove", touchMove);
+  slide.addEventListener("mouseleave", touchEnd);
+});
+
+dots.forEach((item, index) => {
+  item.addEventListener("click", () => {
+    touchStart(index);
+    currentTranslate = index * -window.innerWidth;
+    prevTranslate = currentTranslate;
+    setSliderPosition();
+
+    if (index !== indexClick) {
+      dots[indexClick].className = dots[indexClick].className.replace(
+        " dot-active",
+        ""
+      );
+      item.classList.add("dot-active");
+    }
+    indexClick = index;
+  });
+});
+
+// make responsive to viewport changes
+window.addEventListener("resize", setPositionByIndex);
+
+// prevent menu popup on long press
+window.oncontextmenu = function (event) {
+  event.preventDefault();
+  event.stopPropagation();
+  return false;
+};
+
+function getPositionX(event) {
+  return event.type.includes("mouse") ? event.pageX : event.touches[0].clientX;
 }
 
-function currentSlide(n) {
-  showSlides((slideIndex = n));
+function touchStart(index) {
+  return function (event) {
+    currentIndex = index;
+    startPos = getPositionX(event);
+    isDragging = true;
+    animationID = requestAnimationFrame(animation);
+  };
 }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("slide__child");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {
-    slideIndex = 1;
+function touchMove(event) {
+  if (isDragging) {
+    const currentPosition = getPositionX(event);
+    currentTranslate = prevTranslate + currentPosition - startPos;
   }
-  if (n < 1) {
-    slideIndex = slides.length;
-  }
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
+}
+
+function touchEnd() {
+  cancelAnimationFrame(animationID);
+  isDragging = false;
+  const movedBy = currentTranslate - prevTranslate;
+
+  // if moved enough negative then snap to next slide if there is one
+  if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex += 1;
+  // if moved enough positive then snap to previous slide if there is one
+  if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+
+  setPositionByIndex();
+
+  dots;
+  let i = 0;
   for (i = 0; i < dots.length; i++) {
     dots[i].className = dots[i].className.replace(" dot-active", "");
   }
-  slides[slideIndex - 1].style.display = "flex";
-  dots[slideIndex - 1].className += " dot-active";
+
+  dots[currentIndex].className += " dot-active";
+  indexClick = currentIndex;
+}
+
+function animation() {
+  setSliderPosition();
+  if (isDragging) requestAnimationFrame(animation);
+}
+
+function setPositionByIndex() {
+  currentTranslate = currentIndex * -window.innerWidth;
+  prevTranslate = currentTranslate;
+  setSliderPosition();
+}
+
+function setSliderPosition() {
+  listSlider.style.transform = `translateX(${currentTranslate}px)`;
 }
